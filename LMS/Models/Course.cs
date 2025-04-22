@@ -15,7 +15,7 @@ namespace LMS.Models
         public string Description { get; set; }
 
         [Required]
-        public string TeacherId { get; set; } // ID преподавателя
+        public int TeacherId { get; set; } // ID преподавателя
 
         public virtual ApplicationUser Teacher { get; set; }
     }

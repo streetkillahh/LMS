@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LMS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250422194339_AddCoursesLessonsQuizzes")]
-    partial class AddCoursesLessonsQuizzes
+    [Migration("20250422210444_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,6 +41,10 @@ namespace LMS.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Role")
                         .IsRequired()
                         .HasColumnType("text");
@@ -63,11 +67,7 @@ namespace LMS.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)");
 
-                    b.Property<string>("TeacherId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("TeacherId1")
+                    b.Property<int>("TeacherId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Title")
@@ -77,7 +77,7 @@ namespace LMS.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TeacherId1");
+                    b.HasIndex("TeacherId");
 
                     b.ToTable("Courses");
                 });
@@ -163,8 +163,8 @@ namespace LMS.Migrations
             modelBuilder.Entity("LMS.Models.Course", b =>
                 {
                     b.HasOne("LMS.Models.ApplicationUser", "Teacher")
-                        .WithMany()
-                        .HasForeignKey("TeacherId1")
+                        .WithMany("Courses")
+                        .HasForeignKey("TeacherId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -202,6 +202,11 @@ namespace LMS.Migrations
                         .IsRequired();
 
                     b.Navigation("Lesson");
+                });
+
+            modelBuilder.Entity("LMS.Models.ApplicationUser", b =>
+                {
+                    b.Navigation("Courses");
                 });
 
             modelBuilder.Entity("LMS.Models.Quiz", b =>

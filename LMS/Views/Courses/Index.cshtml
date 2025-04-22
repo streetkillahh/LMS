@@ -1,0 +1,27 @@
+﻿@model IEnumerable<LMS.Models.Course>
+
+<h1>Список курсов</h1>
+
+<p>
+    <a asp-action="Create">Создать новый курс</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Название</th>
+            <th>Описание</th>
+            <th>Преподаватель</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+                <tr>
+                    <td>@item.Title</td>
+                    <td>@item.Description</td>
+                    <td>@item.Teacher?.Name</td>
+                </tr>
+        }
+    </tbody>
+</table>

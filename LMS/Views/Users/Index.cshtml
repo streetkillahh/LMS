@@ -1,0 +1,27 @@
+﻿@model IEnumerable<LMS.Models.ApplicationUser>
+
+<h1>Список пользователей</h1>
+
+<p>
+    <a asp-action="Create">Создать нового пользователя</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Имя</th>
+            <th>Email</th>
+            <th>Роль</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Email</td>
+                    <td>@item.Role</td>
+                </tr>
+        }
+    </tbody>
+</table>

@@ -1,14 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using LMS.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace LMS.Data
+namespace LMS.Data;
+
+public class ApplicationDbContext : DbContext
 {
-    public class ApplicationDbContext : DbContext
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        : base(options)
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
-        {
-        }
-
-
     }
+
+    public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 }

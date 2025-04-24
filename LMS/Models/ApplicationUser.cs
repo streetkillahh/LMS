@@ -16,12 +16,11 @@ namespace LMS.Models
         [EmailAddress]
         public string Email { get; set; }
 
-        [Required]
-        public string PasswordHash { get; set; } // Хэшированный пароль
+        public string PasswordHash { get; set; } // Убираем [Required]
 
         [Required]
         public string Role { get; set; } // Роль: "Admin", "Teacher", "Student"
 
-        public virtual ICollection<Course> Courses { get; set; }
+        public virtual ICollection<Course> Courses { get; set; } = new List<Course>(); // Инициализируем пустой список
     }
 }

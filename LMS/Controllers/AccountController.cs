@@ -27,11 +27,35 @@ namespace LMS.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Отладочное сообщение
+                Console.WriteLine($"Name: {user.Name}, Email: {user.Email}, Role: {user.Role}, Password: {password}");
+
+                // Хэшируем пароль
                 user.PasswordHash = PasswordHelper.HashPassword(password);
-                _context.ApplicationUsers.Add(user);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Login");
+
+                // Проверяем, что пароль хэширован
+                Console.WriteLine($"Hashed Password: {user.PasswordHash}");
+
+                try
+                {
+                    // Добавляем пользователя в базу данных
+                    _context.ApplicationUsers.Add(user);
+                    await _context.SaveChangesAsync();
+
+                    // Отладочное сообщение
+                    Console.WriteLine("User successfully registered.");
+
+                    return RedirectToAction("Login");
+                }
+                catch (Exception ex)
+                {
+                    // Логирование ошибок
+                    Console.WriteLine($"Error saving user to database: {ex.Message}");
+                    ModelState.AddModelError("", "An error occurred while saving the user.");
+                }
             }
+
+            // Если модель недействительна, возвращаем представление с ошибками
             return View(user);
         }
 
@@ -49,8 +73,10 @@ namespace LMS.Controllers
             if (user != null && PasswordHelper.VerifyPassword(password, user.PasswordHash))
             {
                 HttpContext.Response.Cookies.Append("UserId", user.Id.ToString());
+                Console.WriteLine($"User logged in: {user.Email}");
                 return RedirectToAction("Index", "Home");
             }
+
             ModelState.AddModelError("", "Invalid email or password.");
             return View();
         }

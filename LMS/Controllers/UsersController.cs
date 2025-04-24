@@ -1,4 +1,5 @@
 ﻿using LMS.Data;
+using LMS.Filters;
 using LMS.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,29 +16,10 @@ namespace LMS.Controllers
         }
 
         // GET: Users
+        [AuthorizeRole("Admin")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.ApplicationUsers.ToListAsync());
-        }
-
-        // GET: Users/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Users/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Email,Role")] ApplicationUser user)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(user);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(user);
         }
     }
 }
